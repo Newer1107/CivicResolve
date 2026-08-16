@@ -42,7 +42,7 @@ Redis (:6379) — response caching (issues, AI chat, dashboard stats)
 - Voting (up/down) and threaded comments
 
 ### AI (opencode gateway)
-- `lib/ollama.ts` is the shared AI client: **opencode gateway first** (`OPENCODE_URL`, default `https://opencode.ai/zen/go/v1`), **Ollama fallback** when no key is set. Chat model `deepseek-v4-flash` (label shown as `${OLLAMA_CHAT_MODEL} (AI)`), vision model `mimo-v2.5`; `reasoning_effort: none` for fast responses; Redis-cached chat replies.
+- **AI (CoE AI Gateway primary)**: `lib/ollama.ts` is the shared AI client — primary is the campus **CoE AI Gateway** (`COE_API_URL`, default `https://ai.tcetcercd.in/v1`, model `qwen3.6` — Qwen3.6-35B-A3B, text + vision), falling back to the opencode gateway (`OPENCODE_URL` deepseek-v4-flash / mimo-v2.5) then local Ollama (`OLLAMA_URL`). Provider chain is env-driven (`COE_API_KEY` / `OPENCODE_API_KEY`); chat label shows the active model (`activeChatModel()`), thinking is off by default (fast replies); Redis-cached chat replies.
 - **Chat assistant** (`/api/chat`, floating widget): role-aware civic assistant with live platform statistics.
 - **Photo auto-fill** (`/api/ai/auto-fill-issue`): citizen uploads a photo → AI generates title + description for review before submit.
 - **Admin image analysis** (`/api/ai/analyze-image`): infrastructure assessment for organization admins (severity, safety, resources).
