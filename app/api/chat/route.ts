@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ollamaGenerate, OLLAMA_CHAT_MODEL, activeChatModel } from '@/lib/ollama';
+import { ollamaGenerate, activeChatModel } from '@/lib/ollama';
 import { AuthUtils } from '@/lib/auth-utils';
 import { Database } from '@/lib/database';
 import { PerformanceMonitor } from '@/lib/performance';
@@ -942,6 +942,15 @@ IMPORTANT: When asked "Who am I?" or similar personal questions, only respond wi
     
     // Handle specific Gemini API errors
     if (error instanceof Error) {
+      // Provider outage is an outage, not a user error: 503 so the client can
+      // say "assistant unavailable" instead of "something went wrong".
+      if (error.message.startsWith('No AI provider available')) {
+        endTimer()
+        return NextResponse.json(
+          { error: 'The assistant is temporarily unavailable. Please try again shortly.' },
+          { status: 503 }
+        )
+      }
       if (error.message.includes('API_KEY')) {
         endTimer()
         return NextResponse.json(

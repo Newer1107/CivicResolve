@@ -53,3 +53,6 @@ next-env.d.ts
 # tsc shim output for the verify worker
 .verify-build/
 
+
+# Runtime uploads (user photos) — never part of the repo
+public/uploads/
