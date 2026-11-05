@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Self-contained server bundle: keeps the deploy to .next/standalone (~250 MB)
-  // instead of shipping a full node_modules tree. Needed on small hosts.
-  output: 'standalone',
-
   // Only disable ESLint and TypeScript checks in development
   eslint: {
     ignoreDuringBuilds: process.env.NODE_ENV === 'development',
